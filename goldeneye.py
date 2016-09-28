@@ -212,6 +212,7 @@ class GoldenEye(object):
 
                 self.stats()
                 for _ in range(30):
+                        print "request status code %d" % requests.get(self.url).status_code 
                     if requests.get(self.url).status_code != 200:
                         time.sleep(1)
                     else:
