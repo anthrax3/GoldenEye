@@ -638,7 +638,11 @@ def main():
             sys.stderr.write(str(err))
             usage()
             sys.exit(2)
-            time.sleep(10*60)
+            while True:
+                if requests.get(url).status_code != 200:
+                    time.sleep(5)
+                else:
+                    break
 
 if __name__ == "__main__":
     main()
