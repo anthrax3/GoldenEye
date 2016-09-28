@@ -211,7 +211,13 @@ class GoldenEye(object):
                         self.workersQueue.remove(worker)
 
                 self.stats()
-
+                for _ in range(30):
+                    if requests.get(self.url) != 200:
+                        time.sleep(1)
+                    else:
+                        break
+                else:
+                    break
             except (KeyboardInterrupt, SystemExit):
                 print "CTRL+C received. Killing all workers"
                 for worker in self.workersQueue:
