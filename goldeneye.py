@@ -568,76 +568,77 @@ def error(msg):
 ####
 
 def main():
-    
-    try:
+    while True:
+        try:
 
-        if len(sys.argv) < 2:
-            error('Please supply at least the URL')
+            if len(sys.argv) < 2:
+                error('Please supply at least the URL')
 
-        url = sys.argv[1]
+            url = sys.argv[1]
 
-        if url == '-h':
-            usage()
-            sys.exit()
-
-        if url[0:4].lower() != 'http':
-            error("Invalid URL supplied")
-
-        if url == None:
-            error("No URL supplied")
-
-        opts, args = getopt.getopt(sys.argv[2:], "dhw:s:m:u:", ["debug", "help", "workers", "sockets", "method", "useragents" ])
-
-        workers = DEFAULT_WORKERS
-        socks = DEFAULT_SOCKETS
-        method = METHOD_GET
-
-        uas_file = None
-        useragents = []
-
-        for o, a in opts:
-            if o in ("-h", "--help"):
+            if url == '-h':
                 usage()
                 sys.exit()
-            elif o in ("-u", "--useragents"):
-                uas_file = a
-            elif o in ("-s", "--sockets"):
-                socks = int(a)
-            elif o in ("-w", "--workers"):
-                workers = int(a)
-            elif o in ("-d", "--debug"):
-                global DEBUG
-                DEBUG = True
-            elif o in ("-m", "--method"):
-                if a in (METHOD_GET, METHOD_POST, METHOD_RAND):
-                    method = a
+
+            if url[0:4].lower() != 'http':
+                error("Invalid URL supplied")
+
+            if url == None:
+                error("No URL supplied")
+
+            opts, args = getopt.getopt(sys.argv[2:], "dhw:s:m:u:", ["debug", "help", "workers", "sockets", "method", "useragents" ])
+
+            workers = DEFAULT_WORKERS
+            socks = DEFAULT_SOCKETS
+            method = METHOD_GET
+
+            uas_file = None
+            useragents = []
+
+            for o, a in opts:
+                if o in ("-h", "--help"):
+                    usage()
+                    sys.exit()
+                elif o in ("-u", "--useragents"):
+                    uas_file = a
+                elif o in ("-s", "--sockets"):
+                    socks = int(a)
+                elif o in ("-w", "--workers"):
+                    workers = int(a)
+                elif o in ("-d", "--debug"):
+                    global DEBUG
+                    DEBUG = True
+                elif o in ("-m", "--method"):
+                    if a in (METHOD_GET, METHOD_POST, METHOD_RAND):
+                        method = a
+                    else:
+                        error("method {0} is invalid".format(a))
                 else:
-                    error("method {0} is invalid".format(a))
-            else:
-                error("option '"+o+"' doesn't exists")
+                    error("option '"+o+"' doesn't exists")
 
 
-        if uas_file:
-            try:
-                with open(uas_file) as f:
-                    useragents = f.readlines()
-            except EnvironmentError:
-                    error("cannot read file {0}".format(uas_file))
+            if uas_file:
+                try:
+                    with open(uas_file) as f:
+                        useragents = f.readlines()
+                except EnvironmentError:
+                        error("cannot read file {0}".format(uas_file))
 
-        goldeneye = GoldenEye(url)
-        goldeneye.useragents = useragents
-        goldeneye.nr_workers = workers
-        goldeneye.method = method
-        goldeneye.nr_sockets = socks
+            goldeneye = GoldenEye(url)
+            goldeneye.useragents = useragents
+            goldeneye.nr_workers = workers
+            goldeneye.method = method
+            goldeneye.nr_sockets = socks
 
-        goldeneye.fire()
+            goldeneye.fire()
 
-    except getopt.GetoptError, err:
+        except getopt.GetoptError, err:
 
-        # print help information and exit:
-        sys.stderr.write(str(err))
-        usage()
-        sys.exit(2)
+            # print help information and exit:
+            sys.stderr.write(str(err))
+            usage()
+            sys.exit(2)
+            time.sleep(10*60)
 
 if __name__ == "__main__":
     main()
