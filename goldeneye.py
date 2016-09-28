@@ -42,7 +42,7 @@ BY USING THIS SOFTWARE YOU AGREE WITH THESE TERMS.
 
 from multiprocessing import Process, Manager, Pool
 import urlparse, ssl
-import sys, getopt, random, time, os
+import sys, getopt, random, time, os, requests
 
 # Python version-specific 
 if  sys.version_info < (3,0):
