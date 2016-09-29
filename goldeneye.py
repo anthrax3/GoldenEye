@@ -215,8 +215,9 @@ class GoldenEye(object):
                     print "request status code %d" % requests.get(self.url).status_code 
                     if requests.get(self.url).status_code != 200:
                         time.sleep(1)
-                    else:
-                        break
+                    else: #server is still alive we will re-start from the beginning
+                        for worker in self.workersQueue:
+                            self.workersQueue.remove(worker)
                 else:
                     break
             except (KeyboardInterrupt, SystemExit):
