@@ -218,6 +218,7 @@ class GoldenEye(object):
                     else: #server is still alive we will re-start from the beginning
                         for worker in self.workersQueue:
                             self.workersQueue.remove(worker)
+                        break
                 else:
                     break
             except (KeyboardInterrupt, SystemExit):
